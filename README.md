@@ -1,10 +1,11 @@
-# Heroku buildpack: Clojure
+# Buildpack: Clojure
 
-This is a Heroku buildpack for Clojure apps. It uses
-[Leiningen](http://leiningen.org).
+This is a buildpack for Clojure apps.
+
+It uses [Leiningen](http://leiningen.org).
 
 Note that you don't have to do anything special to use this buildpack
-with Clojure apps on Heroku; it will be used by default for all
+with Clojure apps on Scalingo; it will be used by default for all
 projects containing a project.clj file, though it may be an older
 revision than what you're currently looking at.
 
@@ -20,11 +21,10 @@ Example usage for an app already stored in git:
         `-- sample
             `-- core.clj
 
-    $ heroku create
+    $ scalingo create clojure-app
 
-    $ git push heroku master
+    $ git push scalingo master
     ...
-    -----> Heroku receiving push
     -----> Fetching custom buildpack
     -----> Clojure app detected
     -----> Installing Leiningen
@@ -37,14 +37,14 @@ Example usage for an app already stored in git:
            Copying 1 file to /tmp/build_2e5yol0778bcw/lib
     -----> Discovering process types
            Procfile declares types -> core
-    -----> Compiled slug size is 10.0MB
-    -----> Launching... done, v4
-           http://gentle-water-8841.herokuapp.com deployed to Heroku
+    Build complete, shipping your container
+    Waiting for you applicaation to boot
+    <-- https://clojure-app.scalingo.io -->
 
 The buildpack will detect your app as Clojure if it has a
 `project.clj` file in the root. If you use the
 [clojure-maven-plugin](https://github.com/talios/clojure-maven-plugin),
-[the standard Java buildpack](http://github.com/heroku/heroku-buildpack-java)
+[the standard Java buildpack](http://github.com/Scalingo/java-buildpack)
 should work instead.
 
 ## Configuration
@@ -61,8 +61,8 @@ project's process. It also uses profiles that are intended for
 development, which can let test libraries and test configuration sneak
 into production.
 
-In order to ensure consistent builds, normally values set with `heroku
-config:add ...` (other than `LEIN_USERNAME`, `LEIN_PASSWORD`, and
+In order to ensure consistent builds, normally values set with `scalingo
+env-set ...` (other than `LEIN_USERNAME`, `LEIN_PASSWORD`, and
 `LEIN_PASSPHRASE`) will not be visible at compile time. To expose more
 to the compilation process, set a `BUILD_CONFIG_WHITELIST` config var
 containing a space-delimited list of config var names. Note that this
@@ -94,7 +94,7 @@ they can cause reloading issues:
   :profiles {:uberjar {:main myproject.web, :aot :all}}
 ```
 
-If you need Leiningen in a `heroku run` session, it will be downloaded
+If you need Leiningen in a `scalingo run` session, it will be downloaded
 on-demand.
 
 Note that if you use Leiningen features which affect runtime like
@@ -139,7 +139,7 @@ $ git commit -m "JDK 7"
 To change this buildpack, fork it on GitHub. Push up changes to your
 fork, then create a test app with `--buildpack YOUR_GITHUB_URL` and
 push to it. If you already have an existing app you may use
-`heroku config:add BUILDPACK_URL=YOUR_GITHUB_URL` instead.
+`scalingo env-set BUILDPACK_URL=YOUR_GITHUB_URL` instead.
 
 For example, you could adapt it to generate a tarball at build time.
 
@@ -156,7 +156,7 @@ Open `bin/compile` in your editor, and replace the block labeled
     fi
 
 Commit and push the changes to your buildpack to your GitHub fork,
-then push your sample app to Heroku to test. The output should include:
+then push your sample app to Scalingo to test. The output should include:
 
     -----> Generating tar with Leiningen:
 
@@ -164,6 +164,6 @@ If it's something other users would find useful, pull requests are welcome.
 
 ## Troubleshooting
 
-To see what the buildpack has produced, do `heroku run bash` and you
+To see what the buildpack has produced, do `scalingo run bash` and you
 will be logged into an environment with your compiled app available.
 From there you can explore the filesystem and run `lein` commands.
