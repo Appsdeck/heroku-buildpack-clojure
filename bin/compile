@@ -9,9 +9,9 @@ export BUILD_DIR=$1
 export CACHE_DIR=$2
 export ENV_DIR=$3
 
-# Load common JVM functionality from https://github.com/heroku/heroku-buildpack-jvm-common
-JVM_COMMON_BUILDPACK=https://heroku-jvm-common.s3.amazonaws.com/jvm-buildpack-common.tar.gz
-curl --silent --location $JVM_COMMON_BUILDPACK | tar -x bin/java -zO > /tmp/jvm-common
+# Load common JVM functionality from http://github.com/Scalingo/buildpack-jvm-common
+JVM_COMMON_BUILDPACK=${JVM_COMMON_BUILDPACK:-"https://buildpacks-repository.s3.eu-central-1.amazonaws.com/jvm-common.tar.xz"}
+curl --silent --location $JVM_COMMON_BUILDPACK | tar --extract bin/java --xz --to-stdout > /tmp/jvm-common
 source /tmp/jvm-common
 
 # JDK version
