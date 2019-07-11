@@ -10,7 +10,7 @@ export CACHE_DIR=$2
 export ENV_DIR=$3
 
 # Load common JVM functionality from http://github.com/Scalingo/buildpack-jvm-common
-JVM_COMMON_BUILDPACK=https://buildpacks-repository.s3.amazonaws.com/jvm-common.tar.xz
+JVM_COMMON_BUILDPACK=${JVM_COMMON_BUILDPACK:-"https://buildpacks-repository.s3.eu-central-1.amazonaws.com/jvm-common.tar.xz"}
 curl --silent --location $JVM_COMMON_BUILDPACK | tar --extract bin/java --xz --to-stdout > /tmp/jvm-common
 source /tmp/jvm-common
 
